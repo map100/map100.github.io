@@ -323,12 +323,17 @@
 
 	L.Control.Geocoder.Nominatim = L.Class.extend({
 		options: {
-			serviceUrl: '//nominatim.openstreetmap.org/',
+			serviceUrl: 'http://nominatim.openstreetmap.org/',
 			geocodingQueryParams: {},
 			reverseQueryParams: {},
 			htmlTemplate: function(r) {
-				var a = r.address,
-					parts = [];
+
+				var a = r.address;
+				var parts = [];
+					
+				console.log(a.country)	
+					
+					
 				if (a.road || a.building) {
 					parts.push('{building} {road} {house_number}');
 				}
@@ -338,6 +343,7 @@
 						'">{postcode} {city} {town} {village}</span>');
 				}
 
+				
 				if (a.state || a.country) {
 					parts.push('<span class="' + (parts.length > 0 ? 'leaflet-control-geocoder-address-context' : '') +
 						'">{state} {country}</span>');
@@ -353,8 +359,8 @@
 
 		geocode: function(query, cb, context) {
 			L.Control.Geocoder.jsonp(this.options.serviceUrl + 'search/', L.extend({
-				q: query,
-				limit: 5,
+				q: query + ',Украина',
+				limit: 7,
 				format: 'json',
 				addressdetails: 1
 			}, this.options.geocodingQueryParams),

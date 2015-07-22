@@ -116,14 +116,6 @@
             <hr>
         </div>
 		<h6>@ 2015 <a href="http://map100.org.ua">http://map100.org.ua</a></h6>
-	
-		<!--form>
-		  <div class="form-group">
-			<label style="font-size: 12px;">Кількість обраних номенклатурних листів:</label>
-			<label style="font-size: 12px;" id="selectedCount">0</label>
-			<textarea class="form-control" value="" rows="2" id="selectedFeatures"></textarea>
-		  </div>
-		</form-->
 
 </div>		
 	
@@ -155,40 +147,6 @@
                 '<a href="http://giscience.uni-hd.de/" target="_blank">GIScience Research Group @ University of Heidelberg</a>'
         });		
 
-		// Bing Aerial
-		var BingLayer = L.TileLayer.extend({
-			getTileUrl: function(tilePoint) {
-				this._adjustTilePoint(tilePoint);
-				return L.Util.template(this._url, {
-					s: this._getSubdomain(tilePoint),
-					q: this._quadKey(tilePoint.x, tilePoint.y, this._getZoomForUrl())
-				});
-			},
-			_quadKey: function(x, y, z) {
-				var quadKey = [];
-				for (var i = z; i > 0; i--) {
-					var digit = '0';
-					var mask = 1 << (i - 1);
-					if ((x & mask) != 0) {
-						digit++;
-					}
-					if ((y & mask) != 0) {
-						digit++;
-						digit++;
-					}
-					quadKey.push(digit);
-				}
-				return quadKey.join('');
-			}
-		});	
-	
-		var layerBA = new BingLayer('http://t{s}.tiles.virtualearth.net/tiles/a{q}.jpeg?g=2732', {
-			maxZoom: 19,
-			zIndex: 1,
-			subdomains: ['0', '1', '2', '3', '4'],
-			attribution: '&copy; <a href="http://bing.com/maps">Bing Maps</a>'
-		});	
-	
 		// Google layers
 		var layerGoogleRoadmap = new L.Google('ROADMAP');
 		var layerGoogleSat = new L.Google('SATELLITE');
@@ -209,7 +167,9 @@
 		var hash = new L.Hash(map);
 	
 		// add geocoder control
-		L.Control.geocoder({position: "topleft"}).addTo(map);
+		var geocoder = L.Control.geocoder({position: "topleft"}).addTo(map);
+	
+
 	
 	
 
@@ -405,7 +365,6 @@
 		
 	
 		map.setView([48.4947,39.0563], 7);
-
 		
 
         var layerUA100000 = new L.tileLayer('http://134.249.136.27/map100/UA100000/{z}/{x}/{y}.png', { 
@@ -422,7 +381,7 @@
 		});			
 		
 		
-layerUA100000.addTo(map);		
+		layerUA100000.addTo(map);		
 		
 		
 		map.on("overlayadd", function(e) {
@@ -443,38 +402,37 @@ layerUA100000.addTo(map);
 			map.removeLayer(layerUA10000);			
 		  }
 		  if (e.layer === topo25) {
-			map.setZoom(11);
 			layerUA25000.addTo(map);
 
 			map.removeLayer(layerUA50000);
 			map.removeLayer(layerUA100000);
-			map.removeLayer(layerUA10000);			
+			map.removeLayer(layerUA10000);
+			map.setView([48.8164,38.5991], 10);		
 		  }
 		  if (e.layer === topo10) {
-			map.setZoom(11); 
 			layerUA10000.addTo(map);
 			
 			map.removeLayer(layerUA50000);
 			map.removeLayer(layerUA25000);
-			map.removeLayer(layerUA100000);			
+			map.removeLayer(layerUA100000);
+			map.setView([48.8164,38.5991], 11);		
 		  }  
 		});
 
 
 
-	/*
+	
 		map.on("dragend", function(e) {
 		  console.log(map.getCenter().lat+","+map.getCenter().lng);
 		  console.log(map.getZoom());
 		});
-	*/
+	
 
 	
 		// Layer Control
 		var baseLayers = {
 			"OpenStreetMap": layerOSM,
 			"MapBox Imagery": layerMapBoxImagery,
-			"Bing Aerial": layerBA,
 			"Google Roadmap": layerGoogleRoadmap,
 			"Google Satellite": layerGoogleSat
 		};
