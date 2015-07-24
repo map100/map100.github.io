@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--link rel="shortcut icon" sizes="25x25" href="assets/icon.png"-->
+    <title>map100 | Безкоштовні картматеріали для військових</title>
+
+    <link rel="stylesheet" href="assets/bootstrap-3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/font-awesome-4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/leaflet-0.7.3/leaflet.css">
+    <link rel="stylesheet" href="assets/leaflet.groupedlayercontrol/leaflet.groupedlayercontrol.min.css">
+    <link rel="stylesheet" href="assets/leaflet-control.geocoder/Control.Geocoder.css">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-width: 720px;
+            width: auto !important;
+            width: 720px;
+        }
+        
+        #map {
+            width: 100%;
+            height: 675px;
+        }
+        
+        h6 {
+            text-align: center;
+        }
+        
+        #sf100,
+        sf50,
+        sf25,
+        sf10 {
+            max-width: 100%;
+        }
+        
+        #geocode-selector {
+            position: absolute;
+            left: 10px;
+            bottom: 10px;
+        }
+        
+        #geocode-selector .selected {
+            background-color: #0078A8;
+        }
+        
+        div.leaflet-control-geocoder.leaflet-bar.leaflet-control {
+            left: 7px;
+            top: 40px;
+        }
+        
+        .typeahead {
+            background-color: #FFFFFF;
+        }
+        
+        .tt-dropdown-menu {
+            background-color: #FFFFFF;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 4px 4px 4px 4px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            margin-top: 4px;
+            padding: 4px 0;
+            width: 100%;
+            max-height: 300px;
+            overflow: auto;
+        }
+        
+        .tt-suggestion {
+            font-size: 14px;
+            line-height: 20px;
+            padding: 3px 10px;
+        }
+        
+        .tt-suggestion.tt-cursor {
+            background-color: #0097CF;
+            color: #FFFFFF;
+            cursor: pointer;
+        }
+        
+        .tt-suggestion p {
+            margin: 0;
+        }
+        
+        .tt-suggestion + .tt-suggestion {
+            border-top: 1px solid #ccc;
+        }
+        
+        .typeahead-header {
+            margin: 0 5px 5px 5px;
+            padding: 3px 0;
+            border-bottom: 2px solid #333;
+        }
+        
+        .has-feedback .form-control-feedback {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: block;
+            width: 34px;
+            height: 34px;
+            line-height: 34px;
+            text-align: center;
+        }
+        
+        @media (min-width: 1800px) {
+            .container {
+                width: 95%;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="row">
+            <div class="col-xs-6 col-md-4">
+                <img src="assets/logo.png" />
+            </div>
+
+            <div class="col-xs-12 col-md-8">
+                <h2>Безкоштовні картматеріали для військових</h2>
+                <h5>Оберіть потрібні вам номенклатури, натискаючи по них курсором мишки. Повторне натискання знімає позначку. Після того як закінчите вибір, скористайтеся посиланням, розташованим нижче, для відкриття форми замовлення. Відповідне поле форми вже буде попередньо заповнене для вашої зручності.</h5>
+            </div>
+		</div>
+
+        <form class="navbar-form navbar" role="search" style="z-index: 10000; position: absolute;">
+            <div class="form-group has-feedback">
+                <input id="searchbox" type="text" placeholder="Пошук за номенклатурою..." class="form-control" style="width: 275px; height: 28px;">
+            </div>
+        </form>
+
+        <div id="map"></div>
+
+        </br>
+
+        <div class="row">
+            <div class="col-md-3">
+                <label style="font-size: 12px; font-weight: normal;">Обрано </label>
+                <label style="font-size: 12px; font-weight: normal;" id="selectedCount100">0</label>
+                <label style="font-size: 12px; font-weight: normal;"> листів 1 : 100 000 масштабу</label>
+                <textarea class="form-control" value="" rows="1" id="sf100" placeholder="1 : 100 000"></textarea>
+            </div>
+            <div class="col-md-3">
+                <label style="font-size: 12px; font-weight: normal;">Обрано </label>
+                <label style="font-size: 12px; font-weight: normal;" id="selectedCount50">0</label>
+                <label style="font-size: 12px; font-weight: normal;"> листів 1 : 50 000 масштабу</label>
+                <textarea class="form-control" value="" rows="1" id="sf50" placeholder="1 : 50 000"></textarea>
+            </div>
+            <div class="col-md-3">
+                <label style="font-size: 12px; font-weight: normal;">Обрано </label>
+                <label style="font-size: 12px; font-weight: normal;" id="selectedCount25">0</label>
+                <label style="font-size: 12px; font-weight: normal;"> листів 1 : 25 000 масштабу</label>
+                <textarea class="form-control" value="" rows="1" id="sf25" placeholder="1 : 25 000"></textarea>
+            </div>
+            <div class="col-md-3">
+                <label style="font-size: 12px; font-weight: normal;">Обрано </label>
+                <label style="font-size: 12px; font-weight: normal;" id="selectedCount10">0</label>
+                <label style="font-size: 12px; font-weight: normal;"> листів 1 : 10 000 масштабу</label>
+                <textarea class="form-control" value="" rows="1" id="sf10" placeholder="1 : 10 000"></textarea>
+            </div>
+        </div>
+
+        </br>
+
+        <div class="row">
+            <div class="col-md-6">
+                <textarea class="form-control hide" value="" rows="1" id="sfAll" style="width: 100%;"></textarea>
+            </div>
+            <div class="col-md-3">
+                <label style="font-size: 12px; font-weight: normal;">Загальна кількість обраних номенклатурних листів:</label>
+                <label style="font-size: 12px; font-weight: normal;" id="selectedCount">0</label>
+            </div>
+            <div class="col-md-3">
+                <button type="button" id="sendForm" class="btn btn-default pull-right">Замовити</button>
+                <button type="button" id="clearForm" class="btn btn-default pull-right" style="margin-right: 20px;">Скасувати вибір</button>
+            </div>
+        </div>
+
+        <div id="hr-divider">
+            <hr>
+        </div>
+        <h6>@ 2015 <a href="http://map100.org.ua">http://map100.org.ua</a></h6>
+
+    </div>
+
+
+    <script src="assets/jquery-1.11.3.min.js"></script>
+    <script src="assets/bootstrap-3.3.2/js/bootstrap.min.js"></script>
+    <script src="assets/leaflet-0.7.3/leaflet.js"></script>
+    <script src="assets/leaflet.groupedlayercontrol/leaflet.groupedlayercontrol.min.js"></script>
+    <script src="assets/bootbox.min.js"></script>
+    <script src="assets/leaflet.hash/leaflet.hash.js"></script>
+    <script src="assets/leaflet-control.geocoder/Control.Geocoder.js"></script>
+    <script src="assets/google.js"></script>
+    <script src="assets/bing.js"></script>
+    <script src="assets/typeahead.bundle.js"></script>
+    <script src="assets/handlebars-v3.0.3.js"></script>
+
+    <script>
+        // add OpenStreetMap layer
+        var layerOSM = new L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            zIndex: 1,
+            attribution: '&copy; Map Data <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        });
+
+        // add MapBoxImagery layer
+        var layerMapBoxImagery = new L.tileLayer('http://{s}.tiles.mapbox.com/v4/openstreetmap.map-inh7ifmo/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoib3BlbnN0cmVldG1hcCIsImEiOiJhNVlHd29ZIn0.ti6wATGDWOmCnCYen-Ip7Q', {
+            maxZoom: 17,
+            zIndex: 1,
+            attribution: 'Data &copy; <a href="http://www.openstreetmap.org/copyright/en">OSM</a> contributors (ODbL), rendering ' +
+                '<a href="http://giscience.uni-hd.de/" target="_blank">GIScience Research Group @ University of Heidelberg</a>'
+        });
+
+        var bing_api_key = 'Akik6NuE-Cg-LjN4phS3muJkFzfDMZ1CvGn-xQbDDZpFdOZpPmQ9zJZ5ZSr_4tvr';
+		/*
+        var layerBA = new L.BingLayer(bing_api_key, {
+            type: 'Aerial'
+        });
+		*/
+        var layerBR = new L.BingLayer(bing_api_key, {
+            type: 'Road'
+        });
+
+		var BingLayer = L.TileLayer.extend({
+			getTileUrl: function(tilePoint) {
+				this._adjustTilePoint(tilePoint);
+				return L.Util.template(this._url, {
+					s: this._getSubdomain(tilePoint),
+					q: this._quadKey(tilePoint.x, tilePoint.y, this._getZoomForUrl())
+				});
+			},
+			_quadKey: function(x, y, z) {
+				var quadKey = [];
+				for (var i = z; i > 0; i--) {
+					var digit = '0';
+					var mask = 1 << (i - 1);
+					if ((x & mask) != 0) {
+						digit++;
+					}
+					if ((y & mask) != 0) {
+						digit++;
+						digit++;
+					}
+					quadKey.push(digit);
+				}
+				return quadKey.join('');
+			}
+		});		
+
+		
+		var layerBA = new BingLayer('http://t{s}.tiles.virtualearth.net/tiles/a{q}.jpeg?g=2732', {
+			maxZoom: 19,
+			zIndex: -1,
+			subdomains: ['0', '1', '2', '3', '4'],
+			attribution: '&copy; <a href="http://bing.com/maps">Bing Maps</a>'
+		});	
+		
+        // Google layers
+        var layerGoogleRoadmap = new L.Google('ROADMAP');
+        var layerGoogleSat = new L.Google('SATELLITE');
+
+
+        // initialize map
+        var map = new L.Map('map', {
+            minZoom: 6,
+            maxZoom: 18,
+            zoomControl: false
+        });
+
+        // add scale control
+        L.control.scale().addTo(map);
+
+        //add hash control
+        var hash = new L.Hash(map);
+
+
+        var zoomControl = L.control.zoom({
+            position: "bottomright"
+        }).addTo(map);
+
+
+
+        var topo100Search = [],
+            topo50Search = [],
+            topo25Search = [],
+            topo10Search = [];
+
+        // add topo100 layer		
+        var topo100 = L.geoJson(null, {
+            style: function(feature) {
+                return {
+                    color: "#C96A7B",
+                    fill: true,
+                    opacity: 1,
+                    fillOpacity: 0.001,
+                    weight: 3
+                }
+            },
+            onEachFeature: function(feature, layer_topo100) {
+
+                topo100Search.push({
+                    name: layer_topo100.feature.properties.name,
+                    source: "topo100",
+                    id: L.stamp(layer_topo100),
+                    lat: layer_topo100.getBounds().getCenter().lat,
+                    lng: layer_topo100.getBounds().getCenter().lng
+                });
+
+                layer_topo100.on({
+                    click: function(e) {
+                        var layer_topo100 = e.target;
+
+                        if (layer_topo100.options.color == '#00FFFF') {
+                            topo100.resetStyle(e.target);
+                            e.target.feature.properties.selected = false;
+                            //console.log("deselected " + feature.properties.name);
+                        } else {
+                            layer_topo100.setStyle({
+                                weight: 3,
+                                color: "#00FFFF",
+                                opacity: 1,
+                                fillOpacity: 0.1
+                            });
+                            //console.log("selected " + feature.properties.name);
+                            e.target.feature.properties.selected = true;
+                            //$('#selectedFeatures').text( feature.properties.name );
+                        }
+
+
+
+
+                        getAllElements100();
+
+                        if (!L.Browser.ie && !L.Browser.opera) {
+                            layer_topo100.bringToFront();
+                        }
+                    }
+                });
+
+            }
+        });
+        $.getJSON("data/UA100000.geojson", function(data) {
+            topo100.addData(data);
+        });
+
+
+        // add topo50 layer		
+        var topo50 = L.geoJson(null, {
+            style: function(feature) {
+                return {
+                    color: "#176BBE",
+                    fill: true,
+                    opacity: 1,
+                    fillOpacity: 0.001,
+                    weight: 2
+                }
+            },
+            onEachFeature: function(feature, layer_topo50) {
+
+                topo50Search.push({
+                    name: layer_topo50.feature.properties.name,
+                    source: "topo50",
+                    id: L.stamp(layer_topo50),
+                    lat: layer_topo50.getBounds().getCenter().lat,
+                    lng: layer_topo50.getBounds().getCenter().lng
+                });
+
+                layer_topo50.on({
+                    click: function(e) {
+                        var layer_topo50 = e.target;
+
+                        if (layer_topo50.options.color == '#00FFFF') {
+                            topo50.resetStyle(e.target);
+                            e.target.feature.properties.selected = false;
+                            //console.log("deselected " + feature.properties.name);
+                        } else {
+                            layer_topo50.setStyle({
+                                weight: 3,
+                                color: "#00FFFF",
+                                opacity: 1,
+                                fillOpacity: 0.1
+                            });
+                            //console.log("selected " + feature.properties.name);
+                            e.target.feature.properties.selected = true;
+                            //$('#selectedFeatures').text( feature.properties.name );
+                        }
+
+                        getAllElements50();
+
+                        if (!L.Browser.ie && !L.Browser.opera) {
+                            layer_topo50.bringToFront();
+                        }
+                    }
+                });
+
+            }
+        });
+        $.getJSON("data/UA50000.geojson", function(data) {
+            topo50.addData(data);
+        });
+
+
+        // add topo25 layer		
+        var topo25 = L.geoJson(null, {
+            style: function(feature) {
+                return {
+                    color: "#8E381D",
+                    fill: true,
+                    opacity: 1,
+                    fillOpacity: 0.001,
+                    weight: 1
+                }
+            },
+            onEachFeature: function(feature, layer_topo25) {
+
+                topo25Search.push({
+                    name: layer_topo25.feature.properties.name,
+                    source: "topo25",
+                    id: L.stamp(layer_topo25),
+                    lat: layer_topo25.getBounds().getCenter().lat,
+                    lng: layer_topo25.getBounds().getCenter().lng
+                });
+
+                layer_topo25.on({
+                    click: function(e) {
+                        var layer_topo25 = e.target;
+
+                        if (layer_topo25.options.color == '#00FFFF') {
+                            topo25.resetStyle(e.target);
+                            e.target.feature.properties.selected = false;
+                            //console.log("deselected " + feature.properties.name);
+                        } else {
+                            layer_topo25.setStyle({
+                                weight: 3,
+                                color: "#00FFFF",
+                                opacity: 1,
+                                fillOpacity: 0.1
+                            });
+                            //console.log("selected " + feature.properties.name);
+                            e.target.feature.properties.selected = true;
+                            //$('#selectedFeatures').text( feature.properties.name );
+                        }
+
+                        getAllElements25();
+
+                        if (!L.Browser.ie && !L.Browser.opera) {
+                            layer_topo25.bringToFront();
+                        }
+                    }
+                });
+
+            }
+        });
+        $.getJSON("data/UA25000.geojson", function(data) {
+            topo25.addData(data);
+        });
+
+
+        // add topo10 layer		
+        var topo10 = L.geoJson(null, {
+            style: function(feature) {
+                return {
+                    color: "#F6626A",
+                    fill: true,
+                    opacity: 1,
+                    fillOpacity: 0.001,
+                    weight: 1
+                }
+            },
+            onEachFeature: function(feature, layer_topo10) {
+
+                topo10Search.push({
+                    name: layer_topo10.feature.properties.name,
+                    source: "topo10",
+                    id: L.stamp(layer_topo10),
+                    lat: layer_topo10.getBounds().getCenter().lat,
+                    lng: layer_topo10.getBounds().getCenter().lng
+                });
+
+                layer_topo10.on({
+                    click: function(e) {
+                        var layer_topo10 = e.target;
+
+                        if (layer_topo10.options.color == '#00FFFF') {
+                            topo10.resetStyle(e.target);
+                            e.target.feature.properties.selected = false;
+                            //console.log("deselected " + feature.properties.name);
+                        } else {
+                            layer_topo10.setStyle({
+                                weight: 3,
+                                color: "#00FFFF",
+                                opacity: 1,
+                                fillOpacity: 0.1
+                            });
+                            //console.log("selected " + feature.properties.name);
+                            e.target.feature.properties.selected = true;
+                            //$('#selectedFeatures').text( feature.properties.name );
+                        }
+
+                        getAllElements10();
+
+                        if (!L.Browser.ie && !L.Browser.opera) {
+                            layer_topo10.bringToFront();
+                        }
+                    }
+                });
+
+            }
+        });
+        $.getJSON("data/UA10000.geojson", function(data) {
+            topo10.addData(data);
+        });
+
+
+        // add border layer	
+        var border = L.geoJson(null, {
+            style: function(feature) {
+                return {
+                    color: "red",
+                    opacity: 0.6,
+                    weight: 4,
+                    dashArray: '5,5'
+                }
+            }
+        });
+        $.getJSON("data/border.geojson", function(data) {
+            border.addData(data);
+        });
+        border.addTo(map);
+
+
+        map.setView([48.4947, 39.0563], 7);
+
+
+        var layerUA100000 = new L.tileLayer('https://googledrive.com/host/0B76pQANwdmHzR01ZR295UGwyTzQ/{z}/{x}/{y}.png', {
+            zIndex: 5
+        });
+        var layerUA50000 = new L.tileLayer('https://googledrive.com/host/0B76pQANwdmHzX1JXUEJwNDZ5WGc/{z}/{x}/{y}.png', {
+            zIndex: 5
+        });
+        var layerUA25000 = new L.tileLayer('https://googledrive.com/host/0B76pQANwdmHzQXBNSFk5VjBHRjQ/{z}/{x}/{y}.png', {
+            zIndex: 5
+        });
+        var layerUA10000 = new L.tileLayer('https://googledrive.com/host/0B76pQANwdmHzdjBxMnlCM2lKSjg/{z}/{x}/{y}.png', {
+            zIndex: 5
+        });
+
+        topo100.addTo(map);
+        layerUA100000.addTo(map);
+
+
+        map.on("overlayadd", function(e) {
+            if (e.layer === topo100) {
+                //map.setZoom(7);
+                layerUA100000.addTo(map);
+                border.addTo(map);
+
+                map.removeLayer(layerUA50000);
+                map.removeLayer(layerUA25000);
+                map.removeLayer(layerUA10000);
+            }
+            if (e.layer === topo50) {
+                //map.setZoom(9);
+                layerUA50000.addTo(map);
+                border.addTo(map);
+
+                map.removeLayer(layerUA100000);
+                map.removeLayer(layerUA25000);
+                map.removeLayer(layerUA10000);
+            }
+            if (e.layer === topo25) {
+                layerUA25000.addTo(map);
+
+                map.removeLayer(layerUA50000);
+                map.removeLayer(layerUA100000);
+                map.removeLayer(layerUA10000);
+                map.removeLayer(border);
+
+
+                if (parseFloat(topo25.getBounds()._southWest.lng) > parseFloat(map.getBounds()._northEast.lng)) {
+                    map.setView([48.8164, 38.5991], map.getZoom());
+                }
+
+            }
+            if (e.layer === topo10) {
+                layerUA10000.addTo(map);
+
+                map.removeLayer(layerUA50000);
+                map.removeLayer(layerUA25000);
+                map.removeLayer(layerUA100000);
+                map.removeLayer(border);
+
+                if (parseFloat(topo10.getBounds()._southWest.lng) > parseFloat(map.getBounds()._northEast.lng)) {
+                    map.setView([48.8164, 38.5991], map.getZoom());
+                }
+
+            }
+        });
+
+
+        // add geocoder control
+        var geocoder = L.Control.geocoder({
+            position: "topleft",
+            placeholder: "Пошук за адресою...",
+            errorMessage: 'Нічого не знайдено'
+        }).addTo(map);
+
+
+        /*
+        <br><div class='leaflet-control-layers-separator' style='margin-right: -10px;'>
+        */
+
+        // Layer Control
+        var baseLayers = {
+            "Google Roadmap": layerGoogleRoadmap,		
+			"OpenStreetMap<br><div class='leaflet-control-layers-separator' style='margin-right: -10px;'>": layerOSM,			
+			"Bing Road": layerBR,
+	
+			"MapBox Imagery&nbsp&nbsp&nbsp&nbsp&nbsp": layerMapBoxImagery,
+            "Bing Aerial": layerBA,				
+            "Google Satellite": layerGoogleSat
+		
+		
+
+
+        };
+
+		
+        var overlayLayers = {
+            "Номенклатурні рамки:": {
+                "&nbsp1 : 100 000": topo100,
+                "&nbsp1 : 50 000": topo50,
+                "&nbsp1 : 25 000": topo25,
+                "&nbsp1 : 10 000": topo10
+            }
+        };
+
+
+        /* Larger screens get expanded layer control and visible sidebar */
+        if (document.body.clientWidth <= 767) {
+            var isCollapsed = true;
+            $('div.container form.navbar-form.navbar').css('left', '30px');
+            $('div.container form.navbar-form.navbar').css('margin-top', '0px');
+        } else {
+            var isCollapsed = false;
+        };
+
+
+
+
+
+        var baseControl = L.control.groupedLayers(baseLayers, null, {
+            collapsed: isCollapsed, autoZIndex: false
+        });
+        var overlayControl = L.control.groupedLayers(null, overlayLayers, {
+            collapsed: isCollapsed,
+            exclusiveGroups: ["Номенклатурні рамки:"]
+        });
+
+        overlayControl.addTo(map);
+        baseControl.addTo(map);
+
+        layerOSM.addTo(map);
+		
+
+
+
+        // remove All
+        String.prototype.replaceAll = function(search, replace) {
+            return this.split(search).join(replace);
+        }
+
+
+        function getAllElements100() {
+            var selectedFeatureName = [];
+            $.each(map._layers, function(ml) {
+                if (map._layers[ml].feature && map._layers[ml].feature.properties.selected === true) {
+                    selectedFeatureName.push(map._layers[ml].feature.properties.name);
+                }
+            });
+            //console.log(selectedFeatureName);
+            //$('#sf100').text( selectedFeatureName );
+            $('#sf100').text(selectedFeatureName.toString().replaceAll(',', ', '));
+            getAllElements();
+        };
+
+        function getAllElements50() {
+            var selectedFeatureName = [];
+            $.each(map._layers, function(ml) {
+                if (map._layers[ml].feature && map._layers[ml].feature.properties.selected === true) {
+                    selectedFeatureName.push(map._layers[ml].feature.properties.name);
+                }
+            });
+            //console.log(selectedFeatureName);
+            //$('#sf50').text( selectedFeatureName );
+            $('#sf50').text(selectedFeatureName.toString().replaceAll(',', ', '));
+            getAllElements();
+        };
+
+        function getAllElements25() {
+            var selectedFeatureName = [];
+            $.each(map._layers, function(ml) {
+                if (map._layers[ml].feature && map._layers[ml].feature.properties.selected === true) {
+                    selectedFeatureName.push(map._layers[ml].feature.properties.name);
+                }
+            });
+            //console.log(selectedFeatureName);
+            //$('#sf25').text( selectedFeatureName );
+            $('#sf25').text(selectedFeatureName.toString().replaceAll(',', ', '));
+            getAllElements();
+        };
+
+        function getAllElements10() {
+            var selectedFeatureName = [];
+            $.each(map._layers, function(ml) {
+                if (map._layers[ml].feature && map._layers[ml].feature.properties.selected === true) {
+                    selectedFeatureName.push(map._layers[ml].feature.properties.name);
+                }
+            });
+            //console.log(selectedFeatureName);
+            //$('#sf10').text( selectedFeatureName );
+            $('#sf10').text(selectedFeatureName.toString().replaceAll(',', ', '));
+            getAllElements();
+        };
+
+        function getAllElements() {
+
+            $('#sfAll').text('');
+            var s1 = $("#sf100").text();
+            var s2 = $("#sf50").text();
+            var s3 = $("#sf25").text();
+            var s4 = $("#sf10").text();
+            var d = [];
+            var all;
+            all = d.concat(s1, s2, s3, s4);
+            all = all.toString().replace(",,,", ",");
+            all = all.toString().replace(",,", ",");
+            if ($("#sf10").text().length == 0) {
+                all = all.slice(0, -1);
+            }
+            if ($("#sf100").text().length == 0) {
+                all = all.substr(1);
+            }
+
+            $('#sfAll').text(all);
+
+
+            var count;
+            if ($("#sfAll").text()) {
+                count = all.match(/[A-Z]/g).length;
+            } else {
+                count = 0;
+            }
+
+
+            var count100;
+            if ($("#sf100").text()) {
+                count100 = $("#sf100").text().match(/[A-Z]/g).length;
+            } else {
+                count100 = 0;
+            }
+
+            var count50;
+            if ($("#sf50").text()) {
+                count50 = $("#sf50").text().match(/[A-Z]/g).length;
+            } else {
+                count50 = 0;
+            }
+
+            var count25;
+            if ($("#sf25").text()) {
+                count25 = $("#sf25").text().match(/[A-Z]/g).length;
+            } else {
+                count25 = 0;
+            }
+
+            var count10;
+            if ($("#sf10").text()) {
+                count10 = $("#sf10").text().match(/[A-Z]/g).length;
+            } else {
+                count10 = 0;
+            }
+
+
+            $('#sfAll').text($('#sfAll').text().toString().replaceAll(', ', ','));
+            $('#sfAll').text($('#sfAll').text().toString().replaceAll(',', ', '));
+
+            $('#selectedCount').text(count);
+
+
+            $('#selectedCount100').text(count100);
+            $('#selectedCount50').text(count50);
+            $('#selectedCount25').text(count25);
+            $('#selectedCount10').text(count10);
+        };
+
+        $('#sendForm').on('click', function(e) {
+            if (!$("#sfAll").text()) {
+                bootbox.alert("Оберіть потрібні вам номенклатури, натискаючи по них курсором мишки.");
+            } else {
+                window.open("https://docs.google.com/forms/d/1DAJ0hitiiyzqGjRds6NHyISHKiqFq_Hx7HfM0BrVcDs/viewform?entry.1160221620=" + $("#sfAll").text());
+            }
+        });
+
+
+        $('#clearForm').on('click', function(e) {
+            window.location.reload(); // page reload :(
+            /*
+			$('#selectedCount').text( '0' );
+			$('#sfAll').text( '' );
+			$('#sf100').text( '' );
+			$('#sf50').text( '' );
+			$('#sf25').text( '' );
+			$('#sf10').text( '' );
+			
+			topo100.setStyle({
+				color: "red",
+				fill: true,
+				opacity: 1,
+				fillOpacity: 0.001,
+				weight: 1
+			});			
+			topo50.setStyle({
+				color: "red",
+				fill: true,
+				opacity: 1,
+				fillOpacity: 0.001,
+				weight: 1
+			});			
+			topo25.setStyle({
+				color: "red",
+				fill: true,
+				opacity: 1,
+				fillOpacity: 0.001,
+				weight: 1
+			});			
+			topo10.setStyle({
+				color: "red",
+				fill: true,
+				opacity: 1,
+				fillOpacity: 0.001,
+				weight: 1
+			});
+		
+            $.each(map._layers, function (ml) {
+                if (map._layers[ml].feature && map._layers[ml].feature.properties.selected === true) {
+					map._layers[ml].feature.properties.selected = false;
+				}
+            });				
+			
+			*/
+        });
+
+
+        // Highlight search box text on click 
+        $("#searchbox").click(function() {
+            $(this).select();
+        });
+
+        // Prevent hitting enter from refreshing the page 
+        $("#searchbox").keypress(function(e) {
+            if (e.which == 13) {
+                e.preventDefault();
+            }
+        });
+
+        // Typeahead search functionality 
+        $(document).one("ajaxStop", function() {
+
+            var topo100BH = new Bloodhound({
+                name: "topo100",
+                datumTokenizer: function(d) {
+                    return Bloodhound.tokenizers.whitespace(d.name);
+                },
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                local: topo100Search,
+                limit: 10
+            });
+
+            var topo50BH = new Bloodhound({
+                name: "topo50",
+                datumTokenizer: function(d) {
+                    return Bloodhound.tokenizers.whitespace(d.name);
+                },
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                local: topo50Search,
+                limit: 10
+            });
+
+            var topo25BH = new Bloodhound({
+                name: "topo25",
+                datumTokenizer: function(d) {
+                    return Bloodhound.tokenizers.whitespace(d.name);
+                },
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                local: topo25Search,
+                limit: 10
+            });
+
+            var topo10BH = new Bloodhound({
+                name: "topo10",
+                datumTokenizer: function(d) {
+                    return Bloodhound.tokenizers.whitespace(d.name);
+                },
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                local: topo10Search,
+                limit: 10
+            });
+
+            topo100BH.initialize();
+            topo50BH.initialize();
+            topo25BH.initialize();
+            topo10BH.initialize();
+
+            // instantiate the typeahead UI 
+            $("#searchbox").typeahead({
+                minLength: 1,
+                highlight: true,
+                hint: false
+            }, {
+                name: "topo100",
+                displayKey: "name",
+                source: topo100BH.ttAdapter(),
+                templates: {
+                    header: "<h5 class='typeahead-header'>&nbsp;1 : 100 000</h5>",
+                    suggestion: Handlebars.compile(["<small>{{name}}</small>"].join(""))
+                }
+            }, {
+                name: "topo50",
+                displayKey: "name",
+                source: topo50BH.ttAdapter(),
+                templates: {
+                    header: "<h5 class='typeahead-header'>&nbsp;1 : 50 000</h5>",
+                    suggestion: Handlebars.compile(["<small>{{name}}</small>"].join(""))
+                }
+            }, {
+                name: "topo25",
+                displayKey: "name",
+                source: topo25BH.ttAdapter(),
+                templates: {
+                    header: "<h5 class='typeahead-header'>&nbsp;1 : 25 000</h5>",
+                    suggestion: Handlebars.compile(["<small>{{name}}</small>"].join(""))
+                }
+            }, {
+                name: "topo10",
+                displayKey: "name",
+                source: topo10BH.ttAdapter(),
+                templates: {
+                    header: "<h5 class='typeahead-header'>&nbsp;1 : 10 000</h5>",
+                    suggestion: Handlebars.compile(["<small>{{name}}</small>"].join(""))
+                }
+            }).on("typeahead:selected", function(obj, datum) {
+
+                if (datum.source === "topo100") {
+                    if (!map.hasLayer(topo100)) {
+                        //map.addLayer(topo100);
+                    }
+                    map.setView([datum.lat, datum.lng], 10);
+                    if (map._layers[datum.id]) {
+                        //map._layers[datum.id].fire("click");
+                    }
+                }
+
+                if (datum.source === "topo50") {
+                    if (!map.hasLayer(topo50)) {
+                        //map.addLayer(topo50);
+                    }
+                    map.setView([datum.lat, datum.lng], 11);
+                    if (map._layers[datum.id]) {
+                        //map._layers[datum.id].fire("click");
+                    }
+                }
+
+                if (datum.source === "topo25") {
+                    if (!map.hasLayer(topo25)) {
+                        //map.addLayer(topo25);
+                    }
+                    map.setView([datum.lat, datum.lng], 12);
+                    if (map._layers[datum.id]) {
+                        //map._layers[datum.id].fire("click");
+                    }
+                }
+
+                if (datum.source === "topo10") {
+                    if (!map.hasLayer(topo10)) {
+                        //map.addLayer(topo10);
+                    }
+                    map.setView([datum.lat, datum.lng], 13);
+                    if (map._layers[datum.id]) {
+                        //map._layers[datum.id].fire("click");
+                    }
+                }
+
+                if ($(".navbar-collapse").height() > 50) {
+                    $(".navbar-collapse").collapse("hide");
+                }
+            }).on("typeahead:opened", function() {
+                $(".navbar-collapse.in").css("max-height", $(document).height() - $(".navbar-header").height());
+                $(".navbar-collapse.in").css("height", $(document).height() - $(".navbar-header").height());
+            }).on("typeahead:closed", function() {
+                $(".navbar-collapse.in").css("max-height", "");
+                $(".navbar-collapse.in").css("height", "");
+            });
+            $(".twitter-typeahead").css("position", "static");
+            $(".twitter-typeahead").css("display", "block");
+        });
+
+        //$( "leaflet-control-geocoder leaflet-bar leaflet-control" ).last().addClass( "leaflet-control-geocoder-expanded" );
+    </script>
+</body>
+
+</html>
