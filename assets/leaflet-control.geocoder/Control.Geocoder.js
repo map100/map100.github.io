@@ -331,9 +331,6 @@
 				var a = r.address;
 				var parts = [];
 					
-				console.log(a.country)	
-					
-					
 				if (a.road || a.building) {
 					parts.push('{building} {road} {house_number}');
 				}
