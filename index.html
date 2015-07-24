@@ -81,8 +81,8 @@
         }
         
         .tt-suggestion.tt-cursor {
-            background-color: #0097CF;
-            color: #FFFFFF;
+            background-color: #F5F5F5;
+            color: #000000;
             cursor: pointer;
         }
         
@@ -130,7 +130,7 @@
 
             <div class="col-xs-12 col-md-8">
                 <h2>Безкоштовні картматеріали для військових</h2>
-                <h5>Оберіть потрібні вам номенклатури, натискаючи по них курсором мишки. Повторне натискання знімає позначку. Після того як закінчите вибір, натисніть кнопку "Замовити" для відкриття форми замовлення. Відповідне поле форми вже буде попередньо заповнене для вашої зручності. При пошуку за номенклатурою першу літеру (M, N, L) потрібно набирати латиницею.</h5>           
+                <h5>Оберіть потрібні вам номенклатури, натискаючи по них курсором мишки. Повторне натискання скасовує виділення. При пошуку за номенклатурою першу літеру потрібно набирати латиницею - M, N, L.  Після того як закінчите вибір, натисніть кнопку "Замовити" для відкриття форми замовлення. Поле форми з переліком номенклатур вже буде попередньо заповнене для вашої зручності.</h5>           
 			</div>
 		</div>
 
@@ -178,7 +178,7 @@
                 <textarea class="form-control hide" value="" rows="1" id="sfAll" style="width: 100%;"></textarea>
             </div>
             <div class="col-md-3">
-                <label style="font-size: 12px; font-weight: normal;">Загальна кількість обраних номенклатурних листів:</label>
+                <label style="font-size: 12px; font-weight: normal;">Загальна кількість обраних листів:</label>
                 <label style="font-size: 12px; font-weight: normal;" id="selectedCount">0</label>
             </div>
             <div class="col-md-3">
@@ -615,9 +615,11 @@
             position: "topleft",
             placeholder: "Пошук за адресою...",
             errorMessage: 'Нічого не знайдено'
+			//collapsed: false
         }).addTo(map);
 
 
+		
         /*
         <br><div class='leaflet-control-layers-separator' style='margin-right: -10px;'>
         */
@@ -934,7 +936,7 @@
                 displayKey: "name",
                 source: topo100BH.ttAdapter(),
                 templates: {
-                    header: "<h5 class='typeahead-header'>&nbsp;1 : 100 000</h5>",
+                    header: "<h5 class='typeahead-header'>&nbsp;<b>1 : 100 000</b></h5>",
                     suggestion: Handlebars.compile(["<small>{{name}}</small>"].join(""))
                 }
             }, {
@@ -942,7 +944,7 @@
                 displayKey: "name",
                 source: topo50BH.ttAdapter(),
                 templates: {
-                    header: "<h5 class='typeahead-header'>&nbsp;1 : 50 000</h5>",
+                    header: "<h5 class='typeahead-header'>&nbsp;<b>1 : 50 000</b></h5>",
                     suggestion: Handlebars.compile(["<small>{{name}}</small>"].join(""))
                 }
             }, {
@@ -950,7 +952,7 @@
                 displayKey: "name",
                 source: topo25BH.ttAdapter(),
                 templates: {
-                    header: "<h5 class='typeahead-header'>&nbsp;1 : 25 000</h5>",
+                    header: "<h5 class='typeahead-header'>&nbsp;<b>1 : 25 000</b></h5>",
                     suggestion: Handlebars.compile(["<small>{{name}}</small>"].join(""))
                 }
             }, {
@@ -958,7 +960,7 @@
                 displayKey: "name",
                 source: topo10BH.ttAdapter(),
                 templates: {
-                    header: "<h5 class='typeahead-header'>&nbsp;1 : 10 000</h5>",
+                    header: "<h5 class='typeahead-header'>&nbsp;<b>1 : 10 000</b></h5>",
                     suggestion: Handlebars.compile(["<small>{{name}}</small>"].join(""))
                 }
             }).on("typeahead:selected", function(obj, datum) {
@@ -1017,7 +1019,6 @@
             $(".twitter-typeahead").css("display", "block");
         });
 
-        //$( "leaflet-control-geocoder leaflet-bar leaflet-control" ).last().addClass( "leaflet-control-geocoder-expanded" );
     </script>
 </body>
 
