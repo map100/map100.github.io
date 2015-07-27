@@ -29,7 +29,7 @@
         
         #map {
             width: 100%;
-            height: 663px;
+            height: 643px;
         }
         
         h6 {
@@ -125,7 +125,7 @@
 
         <div class="row">
             <div class="col-xs-6 col-md-4">
-                <img src="assets/logo.png" />
+                <img src="assets/logo.png" style="margin-top: 10px;"/>
             </div>
 
             <div class="col-xs-12 col-md-8">
@@ -133,7 +133,9 @@
                 <h5>Оберіть потрібні вам номенклатури, натискаючи по них курсором мишки. Повторне натискання скасовує виділення. При пошуку за номенклатурою першу літеру потрібно набирати латиницею - M, N, L. Після завершення вибору натисніть кнопку "Замовити" для відкриття форми замовлення. Поле форми з переліком номенклатур вже буде попередньо заповнене для вашої зручності.</h5>           
 			</div>
 		</div>
-
+		
+</br>	
+	
         <form class="navbar-form navbar" role="search" style="z-index: 10000; position: absolute;">
             <div class="form-group has-feedback">
                 <input id="searchbox" type="text" placeholder="Пошук за номенклатурою..." class="form-control" style="width: 275px; height: 28px;">
@@ -146,27 +148,23 @@
 
         <div class="row">
             <div class="col-md-3">
-                <label style="font-size: 12px; font-weight: normal;">Обрано </label>
-                <label style="font-size: 12px; font-weight: normal;" id="selectedCount100">0</label>
-                <label style="font-size: 12px; font-weight: normal;"> листів 1 : 100 000 масштабу</label>
+                <label style="font-size: 12px; font-weight: normal;">1 : 100 000. Кількість обраних листів:</label>
+				<label style="font-size: 12px; font-weight: normal;" id="selectedCount100">0</label>
                 <textarea class="form-control" value="" rows="1" id="sf100" placeholder="1 : 100 000"></textarea>
             </div>
             <div class="col-md-3">
-                <label style="font-size: 12px; font-weight: normal;">Обрано </label>
-                <label style="font-size: 12px; font-weight: normal;" id="selectedCount50">0</label>
-                <label style="font-size: 12px; font-weight: normal;"> листів 1 : 50 000 масштабу</label>
+                <label style="font-size: 12px; font-weight: normal;">1 : 50 000. Кількість обраних листів:</label>
+                <label style="font-size: 12px; font-weight: normal;" id="selectedCount50">0</label>				
                 <textarea class="form-control" value="" rows="1" id="sf50" placeholder="1 : 50 000"></textarea>
             </div>
             <div class="col-md-3">
-                <label style="font-size: 12px; font-weight: normal;">Обрано </label>
-                <label style="font-size: 12px; font-weight: normal;" id="selectedCount25">0</label>
-                <label style="font-size: 12px; font-weight: normal;"> листів 1 : 25 000 масштабу</label>
+                <label style="font-size: 12px; font-weight: normal;">1 : 25 000. Кількість обраних листів:</label>
+                <label style="font-size: 12px; font-weight: normal;" id="selectedCount25">0</label>				
                 <textarea class="form-control" value="" rows="1" id="sf25" placeholder="1 : 25 000"></textarea>
             </div>
             <div class="col-md-3">
-                <label style="font-size: 12px; font-weight: normal;">Обрано </label>
-                <label style="font-size: 12px; font-weight: normal;" id="selectedCount10">0</label>
-                <label style="font-size: 12px; font-weight: normal;"> листів 1 : 10 000 масштабу</label>
+                <label style="font-size: 12px; font-weight: normal;">1 : 10 000. Кількість обраних листів:</label>
+                <label style="font-size: 12px; font-weight: normal;" id="selectedCount10">0</label>				
                 <textarea class="form-control" value="" rows="1" id="sf10" placeholder="1 : 10 000"></textarea>
             </div>
         </div>
@@ -190,7 +188,7 @@
         <div id="hr-divider">
             <hr>
         </div>
-        <h6>@ 2015 <a href="http://map100.org.ua">http://map100.org.ua</a>&nbspemail:<a href="mailto:info@map100.org.ua">info@map100.org.ua</a>&nbspphone: +38(096)-650-05-76</h6>
+        <h6>@ 2015 <a href="http://map100.org.ua">http://map100.org.ua</a>&nbspПошта:<a href="mailto:info@map100.org.ua">info@map100.org.ua</a>&nbspТелефон: +38(096)-650-05-76</h6>
 
     </div>
 
@@ -541,7 +539,7 @@
         border.addTo(map);
 
 
-        map.setView([48.4947, 39.0563], 7);
+        map.setView([48.4911, 32.9590], 7);
 
 
         var layerUA100000 = new L.tileLayer('https://googledrive.com/host/0B76pQANwdmHzR01ZR295UGwyTzQ/{z}/{x}/{y}.png', {
@@ -629,10 +627,10 @@
 			"OpenStreetMap<br><div class='leaflet-control-layers-separator' style='margin-right: -10px;'>": layerOSM,			
 			"Bing Road": layerBR,
 	
-			"MapBox Imagery&nbsp&nbsp&nbsp&nbsp&nbsp": layerMapBoxImagery,
+			
             "Bing Aerial": layerBA,				
-            "Google Satellite": layerGoogleSat
-		
+            "Google Satellite": layerGoogleSat,
+			"MapBox Imagery&nbsp&nbsp&nbsp&nbsp&nbsp": layerMapBoxImagery
 		
 
 
@@ -1018,6 +1016,7 @@
             $(".twitter-typeahead").css("display", "block");
         });
 
+	
     </script>
 </body>
 
