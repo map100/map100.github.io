@@ -683,7 +683,7 @@
             });
             //console.log(selectedFeatureName);
             //$('#sf100').text( selectedFeatureName );
-            $('#sf100').text(selectedFeatureName.toString().replaceAll(',', ', '));
+            $('#sf100').text(selectedFeatureName.sort(),toString().replaceAll(',', ', '));
             getAllElements();
         };
 
@@ -696,7 +696,7 @@
             });
             //console.log(selectedFeatureName);
             //$('#sf50').text( selectedFeatureName );
-            $('#sf50').text(selectedFeatureName.toString().replaceAll(',', ', '));
+            $('#sf50').text(selectedFeatureName.sort().toString().replaceAll(',', ', '));
             getAllElements();
         };
 
@@ -709,7 +709,7 @@
             });
             //console.log(selectedFeatureName);
             //$('#sf25').text( selectedFeatureName );
-            $('#sf25').text(selectedFeatureName.toString().replaceAll(',', ', '));
+            $('#sf25').text(selectedFeatureName.sort().toString().replaceAll(',', ', '));
             getAllElements();
         };
 
@@ -722,7 +722,7 @@
             });
             //console.log(selectedFeatureName);
             //$('#sf10').text( selectedFeatureName );
-            $('#sf10').text(selectedFeatureName.toString().replaceAll(',', ', '));
+            $('#sf10').text(selectedFeatureName.sort().toString().replaceAll(',', ', '));
             getAllElements();
         };
 
@@ -733,7 +733,8 @@
             var s2 = $("#sf50").text();
             var s3 = $("#sf25").text();
             var s4 = $("#sf10").text();
-            var d = [];
+	
+			var d = [];
             var all;
             all = d.concat(s1, s2, s3, s4);
             all = all.toString().replace(",,,", ",");
@@ -791,10 +792,10 @@
             $('#selectedCount').text(count);
 
 
-            $('#selectedCount100').text(count100).sort();
-            $('#selectedCount50').text(count50).sort();
-            $('#selectedCount25').text(count25).sort();
-            $('#selectedCount10').text(count10).sort();
+            $('#selectedCount100').text(count100);
+            $('#selectedCount50').text(count50);
+            $('#selectedCount25').text(count25);
+            $('#selectedCount10').text(count10);
         };
 
         $('#sendForm').on('click', function(e) {
