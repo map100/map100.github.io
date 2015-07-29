@@ -115,8 +115,14 @@
 		.form-control[readonly],
 		fieldset[disabled] .form-control {
 		  cursor: default;
+		}	
+	
+		.form-control:focus {
+			border-color: #CCCCCC;
+			outline: none;
+			box-shadow: none!important;
 		}		
-
+		
         @media (min-width: 1800px) {
             .container {
                 width: 95%;
