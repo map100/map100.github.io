@@ -150,22 +150,22 @@
             <div class="col-md-3">
                 <label style="font-size: 12px; font-weight: normal;">1 : 100 000. Кількість обраних листів:</label>
 				<label style="font-size: 12px; font-weight: normal;" id="selectedCount100">0</label>
-                <textarea class="form-control" value="" rows="1" id="sf100" placeholder="1 : 100 000"></textarea>
+                <textarea readonly class="form-control" value="" rows="1" id="sf100" placeholder="1 : 100 000"></textarea>
             </div>
             <div class="col-md-3">
                 <label style="font-size: 12px; font-weight: normal;">1 : 50 000. Кількість обраних листів:</label>
                 <label style="font-size: 12px; font-weight: normal;" id="selectedCount50">0</label>				
-                <textarea class="form-control" value="" rows="1" id="sf50" placeholder="1 : 50 000"></textarea>
+                <textarea readonly class="form-control" value="" rows="1" id="sf50" placeholder="1 : 50 000"></textarea>
             </div>
             <div class="col-md-3">
                 <label style="font-size: 12px; font-weight: normal;">1 : 25 000. Кількість обраних листів:</label>
                 <label style="font-size: 12px; font-weight: normal;" id="selectedCount25">0</label>				
-                <textarea class="form-control" value="" rows="1" id="sf25" placeholder="1 : 25 000"></textarea>
+                <textarea readonly class="form-control" value="" rows="1" id="sf25" placeholder="1 : 25 000"></textarea>
             </div>
             <div class="col-md-3">
                 <label style="font-size: 12px; font-weight: normal;">1 : 10 000. Кількість обраних листів:</label>
                 <label style="font-size: 12px; font-weight: normal;" id="selectedCount10">0</label>				
-                <textarea class="form-control" value="" rows="1" id="sf10" placeholder="1 : 10 000"></textarea>
+                <textarea readonly class="form-control" value="" rows="1" id="sf10" placeholder="1 : 10 000"></textarea>
             </div>
         </div>
 
@@ -791,10 +791,10 @@
             $('#selectedCount').text(count);
 
 
-            $('#selectedCount100').text(count100);
-            $('#selectedCount50').text(count50);
-            $('#selectedCount25').text(count25);
-            $('#selectedCount10').text(count10);
+            $('#selectedCount100').text(count100).sort();
+            $('#selectedCount50').text(count50).sort();
+            $('#selectedCount25').text(count25).sort();
+            $('#selectedCount10').text(count10).sort();
         };
 
         $('#sendForm').on('click', function(e) {
