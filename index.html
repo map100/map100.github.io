@@ -111,6 +111,12 @@
             text-align: center;
         }
         
+		.form-control[disabled],
+		.form-control[readonly],
+		fieldset[disabled] .form-control {
+		  cursor: default;
+		}		
+
         @media (min-width: 1800px) {
             .container {
                 width: 95%;
