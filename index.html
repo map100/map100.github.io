@@ -557,7 +557,7 @@
         border.addTo(map);
 */
 
-        map.setView([48.633,35.848], 7);
+        map.setView([48.0000,35.0000], 8);
 
 
         /*
@@ -608,7 +608,7 @@
                 map.removeLayer(layerUA10000);
                 map.removeLayer(border);
                 if (parseFloat(topo25.getBounds()._southWest.lng) > parseFloat(map.getBounds()._northEast.lng)) {
-                    map.setView([48.8164, 38.5991], map.getZoom());
+                    map.setView([48.0000, 38.0000], map.getZoom());
                 }
 
             }
@@ -620,7 +620,7 @@
                 map.removeLayer(layerUA100000);
                 //map.removeLayer(border);
                 if (parseFloat(topo10.getBounds()._southWest.lng) > parseFloat(map.getBounds()._northEast.lng)) {
-                    map.setView([48.8164, 38.5991], map.getZoom());
+                    map.setView([48.0000, 38.0000], map.getZoom());
                 }
             }
         });
