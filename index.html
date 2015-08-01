@@ -135,7 +135,8 @@
 <body>
     <div class="container">
 
-        <div class="row">
+	<!--        
+	<div class="row">
             <div class="col-xs-7 col-md-5">
                 <img src="assets/logo.jpg" style="margin-top: 25px;"/>
             </div>
@@ -143,8 +144,9 @@
             <div class="col-xs-11 col-md-7">
                 <h2>Безкоштовні картматеріали для військових</h2>
                 <h5>Оберіть потрібні вам номенклатури, натискаючи по них курсором мишки. Повторне натискання скасовує виділення. При пошуку за номенклатурою першу літеру потрібно набирати латиницею - M, N, L. Після завершення вибору натисніть кнопку "Замовити" для відкриття форми замовлення. Поле форми з переліком номенклатур вже буде попередньо заповнене для вашої зручності.</h5>           
-			</div>
-		</div>
+	    </div>
+	</div>
+	-->
 		
 </br>	
 	
@@ -159,21 +161,25 @@
         </br>
 
         <div class="row">
+<!--            
             <div class="col-md-3">
                 <label style="font-size: 12px; font-weight: normal;">1 : 100 000. Кількість обраних листів:</label>
 				<label style="font-size: 12px; font-weight: normal;" id="selectedCount100">0</label>
                 <textarea readonly class="form-control" value="" rows="1" id="sf100" placeholder="1 : 100 000"></textarea>
             </div>
+-->
             <div class="col-md-3">
                 <label style="font-size: 12px; font-weight: normal;">1 : 50 000. Кількість обраних листів:</label>
                 <label style="font-size: 12px; font-weight: normal;" id="selectedCount50">0</label>				
                 <textarea readonly class="form-control" value="" rows="1" id="sf50" placeholder="1 : 50 000"></textarea>
             </div>
+<!--
             <div class="col-md-3">
                 <label style="font-size: 12px; font-weight: normal;">1 : 25 000. Кількість обраних листів:</label>
                 <label style="font-size: 12px; font-weight: normal;" id="selectedCount25">0</label>				
                 <textarea readonly class="form-control" value="" rows="1" id="sf25" placeholder="1 : 25 000"></textarea>
             </div>
+-->
             <div class="col-md-3">
                 <label style="font-size: 12px; font-weight: normal;">1 : 10 000. Кількість обраних листів:</label>
                 <label style="font-size: 12px; font-weight: normal;" id="selectedCount10">0</label>				
@@ -202,9 +208,7 @@
         </div>
         <h6>e-mail: <a href="mailto:map100.org.ua@gmail.com">map100.org.ua@gmail.com</a>&nbspТелефон: +38-096-650-05-76</h6>
         <h6>@ 2015 <a href="http://kartsotnya.ua">http://kartsotnya.ua</a></h6>
-
     </div>
-
 
     <script src="assets/jquery-1.11.3.min.js"></script>
     <script src="assets/bootstrap-3.3.2/js/bootstrap.min.js"></script>
@@ -301,13 +305,17 @@
             position: "bottomright"
         }).addTo(map);
 
-
-
-        var topo100Search = [],
+       /* 
+       var topo100Search = [],
             topo50Search = [],
             topo25Search = [],
             topo10Search = [];
+       */
 
+        var topo50Search = [],
+            topo10Search = [];
+
+        /*
         // add topo100 layer		
         var topo100 = L.geoJson(null, {
             style: function(feature) {
@@ -349,9 +357,6 @@
                             //$('#selectedFeatures').text( feature.properties.name );
                         }
 
-
-
-
                         getAllElements100();
 
                         if (!L.Browser.ie && !L.Browser.opera) {
@@ -365,7 +370,7 @@
         $.getJSON("data/UA100000.geojson", function(data) {
             topo100.addData(data);
         });
-
+        */
 
         // add topo50 layer		
         var topo50 = L.geoJson(null, {
@@ -422,7 +427,7 @@
             topo50.addData(data);
         });
 
-
+        /*
         // add topo25 layer		
         var topo25 = L.geoJson(null, {
             style: function(feature) {
@@ -477,7 +482,7 @@
         $.getJSON("data/UA25000.geojson", function(data) {
             topo25.addData(data);
         });
-
+        */
 
         // add topo10 layer		
         var topo10 = L.geoJson(null, {
@@ -534,7 +539,6 @@
             topo10.addData(data);
         });
 
-
         // add border layer	
         var border = L.geoJson(null, {
             style: function(feature) {
@@ -555,68 +559,65 @@
         map.setView([48.633,35.848], 7);
 
 
-        //var layerUA100000 = new L.tileLayer('https://googledrive.com/host/0B76pQANwdmHzR01ZR295UGwyTzQ/{z}/{x}/{y}.png', {
+        /*
         var layerUA100000 = new L.tileLayer('http://opengeo.intetics.com.ua/kartsotnya/UA100000/{z}/{x}/{y}.png', {
             zIndex: 5
         });
-        //var layerUA50000 = new L.tileLayer('https://googledrive.com/host/0B76pQANwdmHzX1JXUEJwNDZ5WGc/{z}/{x}/{y}.png', {
+        */
         var layerUA50000 = new L.tileLayer('http://opengeo.intetics.com.ua/kartsotnya/UA50000/{z}/{x}/{y}.png', {
             zIndex: 5
         });
-        //var layerUA25000 = new L.tileLayer('https://googledrive.com/host/0B76pQANwdmHzQXBNSFk5VjBHRjQ/{z}/{x}/{y}.png', {
+        /*
         var layerUA25000 = new L.tileLayer('http://opengeo.intetics.com.ua/kartsotnya/UA25000/{z}/{x}/{y}.png', {
             zIndex: 5
         });
-        //var layerUA10000 = new L.tileLayer('https://googledrive.com/host/0B76pQANwdmHzdjBxMnlCM2lKSjg/{z}/{x}/{y}.png', {
+        */
         var layerUA10000 = new L.tileLayer('http://opengeo.intetics.com.ua/kartsotnya/UA10000/{z}/{x}/{y}.png', {
             zIndex: 5
         });
 
-        topo100.addTo(map);
-        layerUA100000.addTo(map);
+        topo50.addTo(map);
+        layerUA50000.addTo(map);
 
 
         map.on("overlayadd", function(e) {
+/*
             if (e.layer === topo100) {
                 //map.setZoom(7);
                 layerUA100000.addTo(map);
                 border.addTo(map);
-
                 map.removeLayer(layerUA50000);
                 map.removeLayer(layerUA25000);
                 map.removeLayer(layerUA10000);
             }
+*/
             if (e.layer === topo50) {
                 //map.setZoom(9);
                 layerUA50000.addTo(map);
                 border.addTo(map);
-
                 map.removeLayer(layerUA100000);
                 map.removeLayer(layerUA25000);
                 map.removeLayer(layerUA10000);
             }
+/*
             if (e.layer === topo25) {
                 layerUA25000.addTo(map);
-
                 map.removeLayer(layerUA50000);
                 map.removeLayer(layerUA100000);
                 map.removeLayer(layerUA10000);
                 map.removeLayer(border);
-
-
                 if (parseFloat(topo25.getBounds()._southWest.lng) > parseFloat(map.getBounds()._northEast.lng)) {
                     map.setView([48.8164, 38.5991], map.getZoom());
                 }
 
             }
+*/
             if (e.layer === topo10) {
                 layerUA10000.addTo(map);
-
                 map.removeLayer(layerUA50000);
                 map.removeLayer(layerUA25000);
                 map.removeLayer(layerUA100000);
                 map.removeLayer(border);
-
                 if (parseFloat(topo10.getBounds()._southWest.lng) > parseFloat(map.getBounds()._northEast.lng)) {
                     map.setView([48.8164, 38.5991], map.getZoom());
                 }
@@ -643,17 +644,15 @@
             "Google Satellite": layerGoogleSat,
 			"MapBox Imagery&nbsp&nbsp&nbsp&nbsp&nbsp": layerMapBoxImagery
         };
-
 		
         var overlayLayers = {
             "Номенклатурні рамки:": {
-                "&nbsp1 : 100 000": topo100,
+                //"&nbsp1 : 100 000": topo100,
                 "&nbsp1 : 50 000": topo50,
-                "&nbsp1 : 25 000": topo25,
+                //"&nbsp1 : 25 000": topo25,
                 "&nbsp1 : 10 000": topo10
             }
         };
-
 
         /* Larger screens get expanded layer control and visible sidebar */
         if (document.body.clientWidth <= 767) {
@@ -663,10 +662,6 @@
         } else {
             var isCollapsed = false;
         };
-
-
-
-
 
         var baseControl = L.control.groupedLayers(baseLayers, null, {
             collapsed: isCollapsed, autoZIndex: false
@@ -680,16 +675,13 @@
         baseControl.addTo(map);
 
         layerOSM.addTo(map);
-		
-
-
 
         // remove All
         String.prototype.replaceAll = function(search, replace) {
             return this.split(search).join(replace);
         }
 
-
+/*
         function getAllElements100() {
             var selectedFeatureName = [];
             $.each(map._layers, function(ml) {
@@ -702,6 +694,7 @@
             $('#sf100').text(selectedFeatureName.sort(),toString().replaceAll(',', ', '));
             getAllElements();
         };
+*/
 
         function getAllElements50() {
             var selectedFeatureName = [];
@@ -716,6 +709,7 @@
             getAllElements();
         };
 
+/*
         function getAllElements25() {
             var selectedFeatureName = [];
             $.each(map._layers, function(ml) {
@@ -728,6 +722,7 @@
             $('#sf25').text(selectedFeatureName.sort().toString().replaceAll(',', ', '));
             getAllElements();
         };
+*/
 
         function getAllElements10() {
             var selectedFeatureName = [];
@@ -745,14 +740,15 @@
         function getAllElements() {
 
             $('#sfAll').text('');
-            var s1 = $("#sf100").text();
+            //var s1 = $("#sf100").text();
             var s2 = $("#sf50").text();
-            var s3 = $("#sf25").text();
+            //var s3 = $("#sf25").text();
             var s4 = $("#sf10").text();
 	
-			var d = [];
+            var d = [];
             var all;
-            all = d.concat(s1, s2, s3, s4);
+            //all = d.concat(s1, s2, s3, s4);
+            all = d.concat(s2, s4);
             all = all.toString().replace(",,,", ",");
             all = all.toString().replace(",,", ",");
             if ($("#sf10").text().length == 0) {
@@ -764,7 +760,6 @@
 
             $('#sfAll').text(all);
 
-
             var count;
             if ($("#sfAll").text()) {
                 count = all.match(/[A-Z]/g).length;
@@ -772,13 +767,14 @@
                 count = 0;
             }
 
-
+/*
             var count100;
             if ($("#sf100").text()) {
                 count100 = $("#sf100").text().match(/[A-Z]/g).length;
             } else {
                 count100 = 0;
             }
+*/
 
             var count50;
             if ($("#sf50").text()) {
@@ -787,12 +783,14 @@
                 count50 = 0;
             }
 
+/*
             var count25;
             if ($("#sf25").text()) {
                 count25 = $("#sf25").text().match(/[A-Z]/g).length;
             } else {
                 count25 = 0;
             }
+*/
 
             var count10;
             if ($("#sf10").text()) {
@@ -801,16 +799,14 @@
                 count10 = 0;
             }
 
-
             $('#sfAll').text($('#sfAll').text().toString().replaceAll(', ', ','));
             $('#sfAll').text($('#sfAll').text().toString().replaceAll(',', ', '));
 
             $('#selectedCount').text(count);
 
-
-            $('#selectedCount100').text(count100);
+            // $('#selectedCount100').text(count100);
             $('#selectedCount50').text(count50);
-            $('#selectedCount25').text(count25);
+            // $('#selectedCount25').text(count25);
             $('#selectedCount10').text(count10);
         };
 
@@ -886,7 +882,7 @@
 
         // Typeahead search functionality 
         $(document).one("ajaxStop", function() {
-
+/*
             var topo100BH = new Bloodhound({
                 name: "topo100",
                 datumTokenizer: function(d) {
@@ -896,7 +892,7 @@
                 local: topo100Search,
                 limit: 10
             });
-
+*/
             var topo50BH = new Bloodhound({
                 name: "topo50",
                 datumTokenizer: function(d) {
@@ -906,7 +902,7 @@
                 local: topo50Search,
                 limit: 10
             });
-
+/*
             var topo25BH = new Bloodhound({
                 name: "topo25",
                 datumTokenizer: function(d) {
@@ -916,7 +912,7 @@
                 local: topo25Search,
                 limit: 10
             });
-
+*/
             var topo10BH = new Bloodhound({
                 name: "topo10",
                 datumTokenizer: function(d) {
@@ -927,9 +923,9 @@
                 limit: 10
             });
 
-            topo100BH.initialize();
+            //topo100BH.initialize();
             topo50BH.initialize();
-            topo25BH.initialize();
+            //topo25BH.initialize();
             topo10BH.initialize();
 
             // instantiate the typeahead UI 
@@ -937,7 +933,8 @@
                 minLength: 1,
                 highlight: true,
                 hint: false
-            }, {
+            }, 
+            /*{
                 name: "topo100",
                 displayKey: "name",
                 source: topo100BH.ttAdapter(),
@@ -945,7 +942,8 @@
                     header: "<h5 class='typeahead-header'>&nbsp;<b>1 : 100 000</b></h5>",
                     suggestion: Handlebars.compile(["<small>{{name}}</small>"].join(""))
                 }
-            }, {
+            },*/
+            {
                 name: "topo50",
                 displayKey: "name",
                 source: topo50BH.ttAdapter(),
@@ -953,7 +951,8 @@
                     header: "<h5 class='typeahead-header'>&nbsp;<b>1 : 50 000</b></h5>",
                     suggestion: Handlebars.compile(["<small>{{name}}</small>"].join(""))
                 }
-            }, {
+            }, 
+            /*{
                 name: "topo25",
                 displayKey: "name",
                 source: topo25BH.ttAdapter(),
@@ -961,7 +960,8 @@
                     header: "<h5 class='typeahead-header'>&nbsp;<b>1 : 25 000</b></h5>",
                     suggestion: Handlebars.compile(["<small>{{name}}</small>"].join(""))
                 }
-            }, {
+            },*/
+            {
                 name: "topo10",
                 displayKey: "name",
                 source: topo10BH.ttAdapter(),
@@ -970,7 +970,7 @@
                     suggestion: Handlebars.compile(["<small>{{name}}</small>"].join(""))
                 }
             }).on("typeahead:selected", function(obj, datum) {
-
+/*
                 if (datum.source === "topo100") {
                     if (!map.hasLayer(topo100)) {
                         //map.addLayer(topo100);
@@ -980,7 +980,7 @@
                         //map._layers[datum.id].fire("click");
                     }
                 }
-
+*/
                 if (datum.source === "topo50") {
                     if (!map.hasLayer(topo50)) {
                         //map.addLayer(topo50);
@@ -990,7 +990,7 @@
                         //map._layers[datum.id].fire("click");
                     }
                 }
-
+/*
                 if (datum.source === "topo25") {
                     if (!map.hasLayer(topo25)) {
                         //map.addLayer(topo25);
@@ -1000,7 +1000,7 @@
                         //map._layers[datum.id].fire("click");
                     }
                 }
-
+*/
                 if (datum.source === "topo10") {
                     if (!map.hasLayer(topo10)) {
                         //map.addLayer(topo10);
