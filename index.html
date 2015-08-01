@@ -539,6 +539,7 @@
             topo10.addData(data);
         });
 
+/*
         // add border layer	
         var border = L.geoJson(null, {
             style: function(feature) {
@@ -554,7 +555,7 @@
             border.addData(data);
         });
         border.addTo(map);
-
+*/
 
         map.setView([48.633,35.848], 7);
 
@@ -594,7 +595,7 @@
             if (e.layer === topo50) {
                 //map.setZoom(9);
                 layerUA50000.addTo(map);
-                border.addTo(map);
+                //border.addTo(map);
                 map.removeLayer(layerUA100000);
                 map.removeLayer(layerUA25000);
                 map.removeLayer(layerUA10000);
@@ -617,7 +618,7 @@
                 map.removeLayer(layerUA50000);
                 map.removeLayer(layerUA25000);
                 map.removeLayer(layerUA100000);
-                map.removeLayer(border);
+                //map.removeLayer(border);
                 if (parseFloat(topo10.getBounds()._southWest.lng) > parseFloat(map.getBounds()._northEast.lng)) {
                     map.setView([48.8164, 38.5991], map.getZoom());
                 }
